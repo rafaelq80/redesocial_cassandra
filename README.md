@@ -1,99 +1,219 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Rede Social - Cassandra Database
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+<br />
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+<div align="center">
+    <img src="https://i.imgur.com/icgjsRQ.png" title="source: imgur.com" /> 
+    <br /><b>com</b><br />
+    <img src="https://i.imgur.com/mJkII4E.png" title="source: imgur.com" width="45%"/> 
+</div>
 
-## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Project setup
+<br />
 
-```bash
-$ npm install
+Este projeto é um **Mínimo Produto Viável (MVP)** de uma API para uma rede social, desenvolvido com **NestJS** e utilizando o banco de dados não relacional baseado em colunas **Cassandra**. A API implementa as operações fundamentais de um CRUD para gerenciamento de **usuários** e **postagens**, oferecendo funcionalidades básicas para criação, leitura, atualização e exclusão de dados.
+
+<br />
+
+## Tecnologias
+
+- **NestJS**: Framework para construção de APIs em Node.js.
+- **Cassandra**: Banco de dados NoSQL para armazenar os dados dos usuários e postagens. 
+- **TypeScript**: Linguagem de programação para garantir tipagem estática.
+- **Docker (opcional)**: Para facilitar a configuração do ambiente de desenvolvimento. 
+
+<br />
+
+## Funcionalidades
+
+- **Entidade `Usuario`**:  
+	- Cadastro de usuários. 
+	- Listagem de usuários. 
+- **Entidade `Postagem`**: 
+	- Criação de postagens. 
+	- Listagem de postagens de um usuário específico.
+	- Exclusão de postagens.
+
+<br />
+
+## Diagrama de Classes
+
+```mermaid
+classDiagram
+class Postagem {
+  - id: string
+  - conteudo: string
+  - usuario_id: string
+  - data_criacao: Date
+}
+class Usuario {
+  - id: string
+  - nome: string
+  - email: string
+  - senha: string
+  - data_criacao: Date
+}
 ```
 
-## Compile and run the project
+<br />
+
+## Requisitos 
+
+- Node.js (>= 16.x)
+- Docker (para executar o Cassandra)
+- Cassandra (via Docker ou serviço local)
+
+<br />
+
+## Instalação 
+
+1. Clone o repositório:    
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+git clone https://github.com/rafaelqa80/redesocial_cassandra.git
 ```
 
-## Run tests
+2. Instale as dependências:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+cd redesocial_cassandra
+npm install
 ```
 
-## Deployment
+3. Inicialize o Banco de dados Cassandra. 
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+> [!TIP]
+>
+> No final do README tem um passo a passo de como instalar o Banco de dados Cassandra no Windows e como executar via Docker.
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+4. Crie a Keyspace **rede_social** e as Famílias de colunas **usuario** e **postagem**, através do código abaixo:
+
+- Execute no Terminal do WSL2 o comando abaixo para conectar com o Cassandra:
 
 ```bash
-$ npm install -g mau
-$ mau deploy
+cqlsh
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+- Execute o código abaixo no Terminal, dentro do **cqlsh**, para criar o Keyspace e as Famílias de colunas:
 
-## Resources
+```cassandra
+CREATE KEYSPACE rede_social WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
 
-Check out a few resources that may come in handy when working with NestJS:
+USE rede_social;
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+CREATE TABLE usuario (
+  id UUID PRIMARY KEY,
+  nome TEXT,
+  email TEXT,
+  senha TEXT,
+  data_criacao TIMESTAMP
+);
 
-## Support
+CREATE TABLE postagem (
+  id UUID PRIMARY KEY,
+  usuario_id UUID,
+  conteudo TEXT,
+  data_criacao TIMESTAMP
+);
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```
 
-## Stay in touch
+<br />
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+> [!IMPORTANT]
+>
+> **Enquanto você estiver executando a aplicação, o WSL2 rodando Ubuntu deve permanecer aberto e conectado, como mostra a imagem abaixo:**
+>
+> <div align="center">
+>     <img src="https://i.imgur.com/fP3T13q.png" title="source: imgur.com"/> 
+> </div>
 
-## License
+<br />
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## Bibliotecas do NestJS
+
+- [x] @nestjs/common 
+- [x] @nestjs/core 
+- [x] @nestjs/platform-express 
+- [x] cassandra-driver
+- [x] reflect-metadata
+- [x] rxjs
+- [x] uuid
+
+<br />
+
+------
+
+<br />
+
+## 👉 Instalação do Cassandra no Windows:
+
+1. Instale ou habilite o **WSL2**
+
+2. Instale o **Ubuntu** dentro do WSL2
+
+3. Atualize o Ubuntu:
+
+```bash
+sudo apt update
+sudo apt upgrade -y
+```
+
+4. Instale o Java 17:
+
+  ```bash
+sudo apt install openjdk-17-jdk curl gnupg -y
+  ```
+
+5. Adicione o repositório do Apache Cassandra e a chave GPG no Ubuntu:
+
+  ```bash
+curl https://downloads.apache.org/cassandra/KEYS | sudo gpg --dearmor -o /usr/share/keyrings/cassandra-archive-keyring.gpg
+  ```
+
+6. Adicione o repositório do Apache Cassandra na lista de fontes do seu sistema Ubuntu:
+
+  ```bash
+echo "deb [signed-by=/usr/share/keyrings/cassandra-archive-keyring.gpg] https://downloads.apache.org/cassandra/debian $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/cassandra.list
+  ```
+
+7. Instale o Apache Cassandra
+
+```bash
+sudo apt update
+sudo apt install cassandra -y
+```
+
+8. Inicialize o serviço do Apache Cassandra
+
+```bash
+sudo systemctl start cassandra
+```
+
+9. Verifique o Status do Serviço
+
+```bash
+sudo systemctl status cassandra
+```
+
+10. Adicione o Apache Cassandra na inicialização do Ubuntu
+
+```bash
+sudo systemctl enable cassandra
+```
+
+11. A porta de conexão do Cassandra deve ser a **9042**.
+
+<br />
+
+## 👉 Executar o Cassandra via Docker:
+
+1. Instale o Docker (https://www.docker.com/)
+2. Execute o comando abaixo no Terminal, para subir uma imagem Docker do Cassandra
+
+```bash
+docker run --name cassandra -p 9042:9042 -d cassandra:latest
+```
+
+3. A porta de conexão do Cassandra deve ser a **9042**.
